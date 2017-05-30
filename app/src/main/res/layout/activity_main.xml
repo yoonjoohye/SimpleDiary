@@ -25,7 +25,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:enabled="false"
         android:text="버튼1"
         />
-
+    <!--enabled false는 비활성화-->
 </LinearLayout>
