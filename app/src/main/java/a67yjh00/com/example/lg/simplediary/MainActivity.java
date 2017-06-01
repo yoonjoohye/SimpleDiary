@@ -1,17 +1,21 @@
 package a67yjh00.com.example.lg.simplediary;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.icu.util.Calendar;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 public class MainActivity extends AppCompatActivity {
@@ -28,6 +32,22 @@ public class MainActivity extends AppCompatActivity {
         date = (DatePicker)findViewById(R.id.date);
         edit = (EditText)findViewById(R.id.edit);
         but = (Button)findViewById(R.id.but);
+        but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    FileOutputStream fos=openFileOutput(fileName, Context.MODE_PRIVATE);
+                    String str=edit.getText().toString();//toString() 문자열 변환 str 출력할때 쓸 데이터
+                    fos.write(str.getBytes());//byte형으로 형변환 IOException로 해야함
+                    fos.close();
+                    Toast.makeText(MainActivity.this,"정상적으로 "+fileName+" 파일이 저장되었습니다.",Toast.LENGTH_LONG).show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        });
+
 
         Calendar cal=Calendar.getInstance();
         int year=cal.get(Calendar.YEAR);
@@ -59,7 +79,11 @@ public class MainActivity extends AppCompatActivity {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+        try{
+            fis.close();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
         return diaryStr;
     }
 }
